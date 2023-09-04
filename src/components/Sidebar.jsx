@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
 
-const Sidebar = ({ onAddNote, notes, currentNoteDelete }) => {
+const Sidebar = ({ onAddNote, notes, currentNoteDelete ,activeNote,setActiveNote}) => {
+  const addActive = (id) => {
+    setActiveNote(id);
+  };
   useEffect(() => {
-    console.log("notesが更新されました: ", notes);
-  }, [notes]);
+    console.log("ActiveNoteが更新されました: ");
+  }, [activeNote]);
+
+  notes.sort((a, b) => b.modDate - a.modDate);
 
   return (
     <div className="app-sidebar">
@@ -14,7 +19,7 @@ const Sidebar = ({ onAddNote, notes, currentNoteDelete }) => {
       </div>
       <div className="app-sidebar-notes">
         {notes.map((note) => (
-          <div className="app-sidebar-note" key={note.id}>
+          <div className={`app-sidebar-note ${activeNote === note.id ? 'active' : ''}`} key={note.id} onClick={() => addActive(note.id)}>
             <div className="sidebar-note-title">
               <strong>{note.title}</strong>
               <button onClick={() => currentNoteDelete(note.id)}>削除</button>
